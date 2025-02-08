@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: prevencao-perdas
+    schema: prevencao-perdas
+    tables:
+      - name: kardex_perdas
+      - name: kardex_vendas
+      - name: excel_base_supervisores
+      - name: excel_base_seguranca_atual
+      - name: cosmos_v14b_dbo_endereco_produto
+      - name: cosmos_v14b_dbo_item
+      - name: cosmos_v14b_dbo_nivel
+      - name: cosmos_v14b_dbo_estante
+      - name: cosmos_v14b_dbo_estacao
+  
+  - name: modelled
+    schema: modelled
+    tables:
+      - name: cosmos_v14b_dbo_nota_entr_cab
+      - name: cosmos_v14b_dbo_nota_entr_det
+      - name: cosmos_v14b_dbo_produto_deposito
+      - name: cosmos_v14b_dbo_zona_separacao
+      - name: cosmos_v14b_dbo_produto_mestre
+      - name: cosmos_v14b_dbo_categoria_produto_novo
