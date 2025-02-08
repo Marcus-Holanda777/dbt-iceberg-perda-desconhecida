@@ -1,0 +1,7 @@
+version: 2
+
+data_tests:
+  - name: assert_periodo_inv
+    description: >
+      A data do ultimo inventario deve ter uma diferença de no maximo
+      1 dia em relação a atualização das bases
