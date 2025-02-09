@@ -24,4 +24,5 @@ where
     and pm.capn_cd_categoria not like '1.101.009%'
     and pm.capn_cd_categoria not like '1.102.009%'
     and pm.capn_cd_categoria not like '2.504.001%'
+    and {{ filtra_periodo() }}
 group by 1, 2, 3, 4, 5, 6

@@ -10,6 +10,7 @@ with
         where
             kp.kafi_tp_mov in ('EA', 'SA', 'E9', 'S9')
             and kp.kafi_tx_nr_docto like '%/%'
+            and {{ filtra_periodo() }}
         group by 1, 2
     ),
 
