@@ -35,7 +35,7 @@ models:
     common:
       +materialized: ephemeral
     periodo_inventario:
-      materialized: view
+      materialized: table
     info_produtos:
       materialized: view
     perdas:
@@ -46,14 +46,3 @@ models:
       materialized: view
     vendas_produto:
       materialize: view
-    pd_periodo_inventario_filial:
-      materialized: table
-      table_type: 'ICEBERG'
-      format: 'PARQUET' 
-      write_compression: 'ZSTD'
-    pd_periodo_inventario_produto:
-      materialized: table
-      table_type: 'ICEBERG'
-      format: 'PARQUET' 
-      write_compression: 'ZSTD'
-    
