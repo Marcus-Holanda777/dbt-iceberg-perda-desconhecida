@@ -1,9 +1,11 @@
-with start_periodo as 
-(
-    select cast(min(ante_penultimo_inventario) as timestamp) - interval '0.001' second as start_at
-    from {{ ref('periodo_inventario') }}
-    where ante_penultimo_inventario is not null
-)
+with
+    start_periodo as (
+        select
+            cast(min(ante_penultimo_inventario) as timestamp)
+            - interval '0.001' second as start_at
+        from {{ ref("periodo_inventario") }}
+        where ante_penultimo_inventario is not null
+    )
 select
     inv.filial,
     kp.kafi_cd_produto as prme_cd_produto,
@@ -28,8 +30,7 @@ where
     and pm.capn_cd_categoria not like '1.102.009%'
     and pm.capn_cd_categoria not like '2.504.001%'
     {% if is_incremental() %}
-      and kp.kafi_dh_ocorrreal > (select start_at from start_periodo)
-    {% else %}
-      and {{ filtra_periodo() }}
+        and kp.kafi_dh_ocorrreal > (select start_at from start_periodo)
+    {% else %} and {{ filtra_periodo() }}
     {% endif %}
 group by 1, 2, 3, 4, 5

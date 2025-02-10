@@ -1,19 +1,17 @@
-{{ 
+{{
     config(
-        materialized='incremental',
-        table_type='iceberg',
-        incremental_strategy='merge',
-        unique_key='filial',
-        format='parquet',
-        write_compression='ZSTD',
-        table_properties={
-            'optimize_rewrite_delete_file_threshold': '2'
-        },
-        post_hook = [
+        materialized="incremental",
+        table_type="iceberg",
+        incremental_strategy="merge",
+        unique_key="filial",
+        format="parquet",
+        write_compression="ZSTD",
+        table_properties={"optimize_rewrite_delete_file_threshold": "2"},
+        post_hook=[
             "OPTIMIZE {{ this.render_pure() }} REWRITE DATA USING BIN_PACK",
-            "VACUUM {{ this.render_pure() }}"
-        ]
-    ) 
+            "VACUUM {{ this.render_pure() }}",
+        ],
+    )
 }}
 
 with
