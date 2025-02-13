@@ -6,8 +6,10 @@
         unique_key=["filial", "prme_cd_produto"],
         format="parquet",
         write_compression="ZSTD",
-        delete_condition="src.filial = target.filial",
         table_properties={"optimize_rewrite_delete_file_threshold": "2"},
+        pre_hook=[
+            "{% if is_incremental(name = this.identifier ) %} DELETE FROM {{ this }} WHERE filial in(select distinct filial from {{ ref('periodo_inventario').render() }}) {% endif %}"
+        ],
         post_hook=[
             "OPTIMIZE {{ this.render_pure() }} REWRITE DATA USING BIN_PACK",
             "VACUUM {{ this.render_pure() }}",
