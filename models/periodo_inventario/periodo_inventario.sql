@@ -1,6 +1,23 @@
 {% set inventarios = ["ultimo", "penultimo", "ante_penultimo"] %}
 
 with
+    filiais as (
+        select distinct kafi_cd_filial
+        from {{ source("prevencao-perdas", "kardex_perdas") }} as kp
+        where
+            kafi_tp_mov in ('EA', 'SA', 'E9', 'S9')
+            and kp.kafi_tx_nr_docto like '%/%'
+            and kafi_dh_ocorrreal > (
+                select
+                    if(
+                        day(current_date) <= 5,
+                        cast(date_trunc('month', current_date) as timestamp)
+                        - interval '1' month,
+                        cast(date_trunc('month', current_date) as timestamp)
+                    )
+                    - interval '0.001' second
+            )
+    ),
     pre_inventarios as (
         select
             kafi_cd_filial as filial,
@@ -11,22 +28,7 @@ with
             kp.kafi_tp_mov in ('EA', 'SA', 'E9', 'S9')
             and kp.kafi_tx_nr_docto like '%/%'
             {% if is_incremental() %}
-
-                and kafi_cd_filial in (
-                    select distinct kafi_cd_filial
-                    from {{ source("prevencao-perdas", "kardex_perdas") }} as kp
-                    where
-                        kafi_dh_ocorrreal > (
-                            select
-                                cast(max(ultimo_inventario) as timestamp)
-                                + interval '1' day
-                                - interval '0.001' second
-                            from "prevencao-perdas".pd_periodo_inventario_filial
-                        )
-                        and kp.kafi_tp_mov in ('EA', 'SA', 'E9', 'S9')
-                        and kp.kafi_tx_nr_docto like '%/%'
-                )
-
+                and kafi_cd_filial in (select * from filiais)
             {% endif %}
             and {{ filtra_periodo() }}
         group by 1, 2
