@@ -3,6 +3,7 @@
         materialized="incremental",
         table_type="iceberg",
         incremental_strategy="merge",
+        partitioned_by=['bucket(filial, 10)', 'bucket(prme_cd_produto, 16)'],
         unique_key=["filial", "prme_cd_produto"],
         format="parquet",
         write_compression="ZSTD",
