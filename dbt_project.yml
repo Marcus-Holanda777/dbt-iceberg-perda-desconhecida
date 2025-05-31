@@ -37,7 +37,7 @@ models:
     periodo_inventario:
       materialized: table
     info_produtos:
-      materialized: view
+      materialized: table
     perdas:
       materialized: view
     vendas:
